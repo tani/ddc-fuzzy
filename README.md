@@ -25,4 +25,4 @@ call ddc#custom#patch_global('sourceOptions', {
 ```
 
 This work is licensed under the MIT License.
-Copyright &copy 2021 TANIGUCHI Masaya. All rights reserved.
+Copyright &copy; 2021 TANIGUCHI Masaya. All rights reserved.
