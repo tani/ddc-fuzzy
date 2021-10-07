@@ -1,5 +1,9 @@
 # ddc-fuzzy filters
 
+
+https://user-images.githubusercontent.com/5019902/136406758-44006b83-0603-447a-9ba1-cbbc1a76880b.mp4
+
+
 Fuzzy matching filter for [ddc.vim](https://github.com/Shougo/ddc.vim)
 The de facto standard filters, [match_head](https://github.com/Shougo/ddc-match_head) and [sorter_rank](https://github.com/Shougo/ddc-sorter_rank),
 behave like the other completion such as VSCode.
