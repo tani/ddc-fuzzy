@@ -35,8 +35,25 @@ function scoreMatch(source: string, match: number[]): number {
   return score
 }
 
+function findBestMatch(pattern: string, source: string): [number, number[]] {
+  let bestScore = -Infinity
+  let bestMatch: number[] = []
+  for(const m of findAllMatches(pattern, source)) {
+    const s = scoreMatch(source, m)
+    if (s > bestScore) {
+      bestScore = s
+      bestMatch = m
+    }
+  }
+  return [bestScore, bestMatch]
+}
+
 export function score(pattern: string, source: string): number {
-  return Math.max(...findAllMatches(pattern, source).map(match => scoreMatch(source, match)));
+  return findBestMatch(pattern, source)[0]
+}
+
+export function match(pattern: string, source: string): number[] {
+  return findBestMatch(pattern, source)[1]
 }
 
 export function test(pattern: string, source: string): boolean {
