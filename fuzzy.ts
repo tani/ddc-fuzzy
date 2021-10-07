@@ -1,7 +1,7 @@
 // Trivial fuzzy sorter written by TANIGUCHI Masaya
 // Public Domain
 
-function findAllMatches(pattern: string, source: string) {
+export function findAllMatches(pattern: string, source: string) {
   const indicesList: number[][] = pattern.split("").map((char) => {
     return ([] as number[]).concat(
       ...source.split("").map((c, i) => c === char ? [i] : []),
@@ -11,15 +11,15 @@ function findAllMatches(pattern: string, source: string) {
     if (i === indicesList.length) {
       return [acc];
     }
-    const candidates = indicesList[i]
-      .slice(indicesList[i].findIndex((c) => (acc.at(-1) ?? -1) < c))
-      .map((c) => recur(acc.concat([c]), i + 1));
-    return ([] as number[][]).concat(...candidates);
+    const j = indicesList[i].findIndex((c) => (acc.at(-1) ?? -1) < c);
+    return j < 0 ? [] : ([] as number[][]).concat(
+      ...indicesList[i].slice(j).map((c) => recur(acc.concat([c]), i + 1)),
+    );
   }
   return recur([], 0);
 }
 
-function scoreMatch(source: string, match: number[]): number {
+export function scoreMatch(source: string, match: number[]): number {
   const length = (match.at(-1) ?? 0) - match[0];
   let ngroup = 1;
   for (let i = 0; i < match.length; i++) {
@@ -27,46 +27,49 @@ function scoreMatch(source: string, match: number[]): number {
       ngroup += 1;
     }
   }
-  let score = 0
-  score += 1 / ngroup
-  score += 1 / (match[0] + 1) / 10
-  score += 1 / length / 100
-  score += 1 / source.length / 1000
-  return score
+  let score = 0;
+  score += 1 / ngroup;
+  score += 1 / (match[0] + 1) / 10;
+  score += 1 / length / 100;
+  score += 1 / source.length / 1000;
+  return score;
 }
 
-function findBestMatch(pattern: string, source: string): [number, number[]] {
-  let bestScore = -Infinity
-  let bestMatch: number[] = []
-  for(const m of findAllMatches(pattern, source)) {
-    const s = scoreMatch(source, m)
+export function findBestMatch(
+  pattern: string,
+  source: string,
+): [number, number[]] {
+  let bestScore = -Infinity;
+  let bestMatch: number[] = [];
+  for (const m of findAllMatches(pattern, source)) {
+    const s = scoreMatch(source, m);
     if (s > bestScore) {
-      bestScore = s
-      bestMatch = m
+      bestScore = s;
+      bestMatch = m;
     }
   }
-  return [bestScore, bestMatch]
+  return [bestScore, bestMatch];
 }
 
 export function score(pattern: string, source: string): number {
-  return findBestMatch(pattern, source)[0]
+  return findBestMatch(pattern, source)[0];
 }
 
 export function match(pattern: string, source: string): number[] {
-  return findBestMatch(pattern, source)[1]
+  return findBestMatch(pattern, source)[1];
 }
 
 export function test(pattern: string, source: string): boolean {
-  let p = 0
-  let s = 0
-  while(p < pattern.length) {
+  let p = 0;
+  let s = 0;
+  while (p < pattern.length) {
     if (s >= source.length) {
-      return false
+      return false;
     }
     if (pattern[p] === source[s]) {
-      p++
+      p++;
     }
-    s++
+    s++;
   }
-  return true
+  return true;
 }
