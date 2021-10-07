@@ -7,11 +7,13 @@ export class Filter extends BaseFilter<{}> {
     return Promise.resolve(
       args.candidates.map((candidate) => {
         const match = fuzzy.match(args.completeStr, candidate.word)
-        const word = candidate.word.split("")
-        for(const i of match) {
-          word[i] = `[${word[i]}]`
-        }
-        candidate.abbr = word.join("").replaceAll("][", "")
+        candidate.abbr =
+          candidate
+            .word
+            .split("")
+            .map((c, i) => match.includes(i) ? `(${c})` : c)
+            .join("")
+            .replaceAll(")(", "")
         return candidate
       })
     )
