@@ -1,7 +1,6 @@
-# ddc-fuzzy filters
+[#](#) ddc-fuzzy filters
 
-https://user-images.githubusercontent.com/5019902/136406758-44006b83-0603-447a-9ba1-cbbc1a76880b.mp4
-
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/5019902/136498294-ed2a2c3f-95b1-45d1-bdfd-0909d9ab43db.gif)
 
 Fuzzy matching filter for [ddc.vim](https://github.com/Shougo/ddc.vim)
 The de facto standard filters, [match_head](https://github.com/Shougo/ddc-match_head) and [sorter_rank](https://github.com/Shougo/ddc-sorter_rank),
