@@ -1,6 +1,5 @@
 # ddc-fuzzy filters
 
-
 https://user-images.githubusercontent.com/5019902/136406758-44006b83-0603-447a-9ba1-cbbc1a76880b.mp4
 
 
@@ -14,13 +13,14 @@ Our filters fix this problem with the fuzzy filter hahaves like CtrlP.
 
 To install our filters,
 
-```vim
+```viml
 Plug 'tani/ddc-fuzzy'
 ```
 
 To use our filters,
 
-```vim
+```viml
+call ddc#custom#patch_global('completionMenu', 'pum.vim')
 call ddc#custom#patch_global('sourceOptions', {
   \   '_': {
   \     'matchers': ['matcher_fuzzy'],
