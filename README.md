@@ -35,10 +35,10 @@ call ddc#custom#patch_global('sourceOptions', {
 
 `matcher_fuzzy` filter provides an option `splitMode`.
 For the default mode, `{ 'splitMode': 'character' }`,
-the each input character matches any characters of a candidate.
+each input character matches any characters of a candidate.
 For example, `abc` matches `axbxc`.
 On the other hand, for the option `{'splitMode': 'word'}`,
-the each input character matches the beginning of a word of a candidate.
+each input character matches the beginning of a word of a candidate.
 For example, `abc` does not match `axbxc` but `abc` matches `a_bc` and `a_b_c`.
 
 ```viml
