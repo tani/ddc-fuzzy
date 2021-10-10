@@ -48,5 +48,17 @@ call ddc#custom#patch_global('filterParams', {
   \ })
 ```
 
+`converter_fuzzy` filter provides an option `hlGroup` to change the highlight
+group in vim. This filter applies the highlight group to characters matched by
+the input pattern.
+
+```viml
+call ddc#custom#patch_global('filterParams', {
+  \   'conveter_fuzzy': {
+  \     'hlGroup': 'SpellBad'
+  \   }
+  \ })
+```
+
 This work is licensed under the MIT License. Copyright &copy; 2021 TANIGUCHI
 Masaya. All rights reserved.
