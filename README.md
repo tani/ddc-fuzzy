@@ -1,14 +1,12 @@
-[#](#) ddc-fuzzy filters
+# ddc-fuzzy filters
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/5019902/136498294-ed2a2c3f-95b1-45d1-bdfd-0909d9ab43db.gif)
+https://user-images.githubusercontent.com/5019902/136666268-0953a435-f331-48e6-9502-490d40b55693.mp4
 
-Fuzzy matching filter for [ddc.vim](https://github.com/Shougo/ddc.vim)
-The de facto standard filters, [match_head](https://github.com/Shougo/ddc-match_head) and [sorter_rank](https://github.com/Shougo/ddc-sorter_rank),
-behave like the other completion such as VSCode.
-They sugget terms containing an input as a substring, however, they ommit word with an typo,
-it means that we cannot obtain a suggestion `word` from `wrd`, moreover, it is hard to select a long word with a short input.
+Fuzzy matching filters for [ddc.vim](https://github.com/Shougo/ddc.vim)
 
-Our filters fix this problem with the fuzzy filter hahaves like CtrlP.
+The de facto standard filters, [match_head](https://github.com/Shougo/ddc-match_head) and [sorter_rank](https://github.com/Shougo/ddc-sorter_rank), behave like the other completion such as VSCode. They suggest terms containing an input as a substring. However, they omit words with a typo. It means that we cannot obtain a suggestion word from wrd. Moreover, it is hard to select a long word with a short input.
+
+Our filters fix this problem with the fuzzy filter that hahaves like CtrlP.
 
 To install our filters,
 
