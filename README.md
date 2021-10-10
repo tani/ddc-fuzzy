@@ -54,7 +54,7 @@ the input pattern.
 
 ```viml
 call ddc#custom#patch_global('filterParams', {
-  \   'conveter_fuzzy': {
+  \   'converter_fuzzy': {
   \     'hlGroup': 'SpellBad'
   \   }
   \ })
