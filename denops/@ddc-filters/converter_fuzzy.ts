@@ -5,7 +5,9 @@ import {
 } from "https://lib.deno.dev/x/ddc_vim@v0/base/filter.ts";
 import * as fuzzy from "../../fuzzy.ts";
 
-type Params = Record<string, never>;
+type Params = {
+  hlGroup: string;
+};
 
 export class Filter extends BaseFilter<Params> {
   override filter(args: FilterArguments<Params>): Promise<Candidate[]> {
@@ -21,7 +23,7 @@ export class Filter extends BaseFilter<Params> {
           col: col,
           type: "abbr",
           name: "ddc_fuzzy_matched_character",
-          "hl_group": "SpellBad",
+          "hl_group": args.filterParams.hlGroup,
           width: 1,
         }));
         return candidate;
@@ -29,6 +31,8 @@ export class Filter extends BaseFilter<Params> {
     );
   }
   override params(): Params {
-    return {};
+    return {
+      hlGroup: "SpellBad",
+    };
   }
 }

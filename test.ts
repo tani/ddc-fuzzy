@@ -59,6 +59,7 @@ Deno.test("converter", async () => {
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
+      filterParams: { hlGroup: "SpellBad" },
     } as any),
     [
       {

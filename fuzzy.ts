@@ -82,9 +82,9 @@ export function wtest(pattern: string, source: string): boolean {
     if (s >= source.length) {
       return false;
     }
-    const w = m 
-      || /[^a-zA-Z]/.test(source[s - 1])
-      || /[a-z][A-Z]/.test(source.slice(s - 1, s + 1));
+    const w = m ||
+      /[^a-zA-Z]/.test(source[s - 1]) ||
+      /[a-z][A-Z]/.test(source.slice(s - 1, s + 1));
     if (w && pattern[p] === source[s]) {
       p++;
       m = true;
@@ -95,4 +95,3 @@ export function wtest(pattern: string, source: string): boolean {
   }
   return true;
 }
-
