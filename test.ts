@@ -7,6 +7,42 @@ const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
 const converter = new Converter.Filter();
 
+Deno.test("matcher", async () => {
+  assertEquals(
+    await matcher.filter({
+      sourceOptions: { ignoreCase: false },
+      completeStr: "abc",
+      candidates: [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }, {
+        word: "xyz",
+      }],
+      filterParams: { splitMode: "character" },
+    } as any),
+    [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }],
+  );
+  assertEquals(
+    await matcher.filter({
+      sourceOptions: { ignoreCase: false },
+      completeStr: "aBc",
+      candidates: [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBxc" }, {
+        word: "aBc",
+      }, { word: "xyz" }],
+      filterParams: { splitMode: "word" },
+    } as any),
+    [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBc" }],
+  );
+});
+
+Deno.test("sorter", async () => {
+  assertEquals(
+    await sorter.filter({
+      sourceOptions: { ignoreCase: false },
+      completeStr: "abc",
+      candidates: [{ word: "0a0b0c0" }, { word: "abc" }],
+    } as any),
+    [{ word: "abc" }, { word: "0a0b0c0" }],
+  );
+});
+
 function highlight(col: number) {
   return {
     type: "abbr",
@@ -32,27 +68,5 @@ Deno.test("converter", async () => {
       { word: "abc", highlights: [highlight(0), highlight(1), highlight(2)] },
       { word: "xyz", highlights: [] },
     ],
-  );
-});
-
-Deno.test("matcher", async () => {
-  assertEquals(
-    await matcher.filter({
-      sourceOptions: { ignoreCase: false },
-      completeStr: "abc",
-      candidates: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
-    } as any),
-    [{ word: "0a0b0c0" }, { word: "abc" }],
-  );
-});
-
-Deno.test("sorter", async () => {
-  assertEquals(
-    await sorter.filter({
-      sourceOptions: { ignoreCase: false },
-      completeStr: "abc",
-      candidates: [{ word: "0a0b0c0" }, { word: "abc" }],
-    } as any),
-    [{ word: "abc" }, { word: "0a0b0c0" }],
   );
 });

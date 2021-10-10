@@ -59,7 +59,7 @@ export function match(pattern: string, source: string): number[] {
   return findBestMatch(pattern, source)[1];
 }
 
-export function test(pattern: string, source: string): boolean {
+export function ctest(pattern: string, source: string): boolean {
   let p = 0;
   let s = 0;
   while (p < pattern.length) {
@@ -68,6 +68,28 @@ export function test(pattern: string, source: string): boolean {
     }
     if (pattern[p] === source[s]) {
       p++;
+    }
+    s++;
+  }
+  return true;
+}
+
+export function wtest(pattern: string, source: string): boolean {
+  let p = 0;
+  let s = 0;
+  let m = true;
+  while (p < pattern.length) {
+    if (s >= source.length) {
+      return false;
+    }
+    let w = m;
+    w ||= /[^a-zA-Z]/.test(source[s - 1]);
+    w ||= /[a-z]/.test(source[s - 1]) && /[A-Z]/.test(source[s]);
+    if (w && pattern[p] === source[s]) {
+      p++;
+      m = true;
+    } else {
+      m = false;
     }
     s++;
   }
