@@ -2,6 +2,7 @@ import * as Matcher from "./denops/@ddc-filters/matcher_fuzzy.ts";
 import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
 import { assertEquals } from "https://lib.deno.dev/std@0.106.0/testing/asserts.ts";
+import * as R from "https://esm.sh/rambda@6";
 
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
@@ -9,36 +10,36 @@ const converter = new Converter.Filter();
 
 Deno.test("matcher", async () => {
   assertEquals(
-    await matcher.filter({
+    (await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }, {
         word: "xyz",
       }],
       filterParams: { splitMode: "character" },
-    } as any),
+    } as any)).map(R.omit(["user_data"])),
     [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }],
   );
   assertEquals(
-    await matcher.filter({
+    (await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "aBc",
       candidates: [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBxc" }, {
         word: "aBc",
       }, { word: "xyz" }],
       filterParams: { splitMode: "word" },
-    } as any),
+    } as any)).map(R.omit(["user_data"])),
     [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBc" }],
   );
 });
 
 Deno.test("sorter", async () => {
   assertEquals(
-    await sorter.filter({
+    (await sorter.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "abc" }],
-    } as any),
+    } as any)).map(R.omit(["user_data"])),
     [{ word: "abc" }, { word: "0a0b0c0" }],
   );
 });
@@ -55,12 +56,12 @@ function highlight(col: number) {
 
 Deno.test("converter", async () => {
   assertEquals(
-    await converter.filter({
+    (await converter.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
       filterParams: { hlGroup: "SpellBad" },
-    } as any),
+    } as any)).map(R.omit(["user_data"])),
     [
       {
         word: "0a0b0c0",

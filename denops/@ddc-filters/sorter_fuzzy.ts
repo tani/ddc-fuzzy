@@ -3,20 +3,32 @@ import {
   BaseFilter,
   FilterArguments,
 } from "https://lib.deno.dev/x/ddc_vim@v0/base/filter.ts";
-import memoizy from "https://lib.deno.dev/x/memoizy@v1/mod.ts";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = Record<string, never>;
 
+type UserData = { fuzzyMatch?: fuzzy.Match } | undefined;
+
 export class Filter extends BaseFilter<Params> {
   override filter(args: FilterArguments<Params>): Promise<Candidate[]> {
-    const score = memoizy(fuzzy.score);
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
+    const candidates = args.candidates.map((candidate) => {
+      const fuzzyMatch: fuzzy.Match =
+        (candidate.user_data as UserData)?.fuzzyMatch ??
+          fuzzy.findBestMatch(
+            normalize(args.completeStr),
+            normalize(candidate.word),
+          );
+      return {
+        ...candidate,
+        user_data: { fuzzyMatch },
+      };
+    });
     return Promise.resolve(
-      args.candidates.sort((a, b) => {
-        const x = score(normalize(args.completeStr), normalize(b.word));
-        const y = score(normalize(args.completeStr), normalize(a.word));
+      candidates.sort((a, b) => {
+        const x = (b.user_data as UserData)?.fuzzyMatch?.score ?? 0;
+        const y = (a.user_data as UserData)?.fuzzyMatch?.score ?? 0;
         return x - y;
       }),
     );
