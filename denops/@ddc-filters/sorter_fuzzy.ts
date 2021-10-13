@@ -7,28 +7,23 @@ import * as fuzzy from "../../fuzzy.ts";
 
 type Params = Record<string, never>;
 
-type UserData = { fuzzyMatch?: fuzzy.Match } | undefined;
-
 export class Filter extends BaseFilter<Params> {
   override filter(args: FilterArguments<Params>): Promise<Candidate[]> {
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
-    const candidates = args.candidates.map((candidate) => {
-      const fuzzyMatch: fuzzy.Match =
-        (candidate.user_data as UserData)?.fuzzyMatch ??
-          fuzzy.findBestMatch(
-            normalize(args.completeStr),
-            normalize(candidate.word),
-          );
-      return {
-        ...candidate,
-        user_data: { fuzzyMatch },
-      };
-    });
+    const matches = new Map<Candidate, fuzzy.Match>(
+      args.candidates.map((candidate) => [
+        candidate,
+        fuzzy.findBestMatch(
+          normalize(args.completeStr),
+          normalize(candidate.word),
+        ),
+      ]),
+    );
     return Promise.resolve(
-      candidates.sort((a, b) => {
-        const x = (b.user_data as UserData)?.fuzzyMatch?.score ?? 0;
-        const y = (a.user_data as UserData)?.fuzzyMatch?.score ?? 0;
+      args.candidates.sort((a, b) => {
+        const x = matches.get(b)?.score ?? 0;
+        const y = matches.get(a)?.score ?? 0;
         return x - y;
       }),
     );

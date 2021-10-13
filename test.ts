@@ -2,7 +2,6 @@ import * as Matcher from "./denops/@ddc-filters/matcher_fuzzy.ts";
 import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
 import { assertEquals } from "https://lib.deno.dev/std@0.106.0/testing/asserts.ts";
-import * as R from "https://esm.sh/rambda@6";
 
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
@@ -17,7 +16,7 @@ Deno.test("matcher", async () => {
         word: "xyz",
       }],
       filterParams: { splitMode: "character" },
-    } as any)).map(R.omit(["user_data"])),
+    } as any)),
     [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }],
   );
   assertEquals(
@@ -28,7 +27,7 @@ Deno.test("matcher", async () => {
         word: "aBc",
       }, { word: "xyz" }],
       filterParams: { splitMode: "word" },
-    } as any)).map(R.omit(["user_data"])),
+    } as any)),
     [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBc" }],
   );
 });
@@ -39,7 +38,7 @@ Deno.test("sorter", async () => {
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "abc" }],
-    } as any)).map(R.omit(["user_data"])),
+    } as any)),
     [{ word: "abc" }, { word: "0a0b0c0" }],
   );
 });
@@ -61,7 +60,7 @@ Deno.test("converter", async () => {
       completeStr: "abc",
       candidates: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
       filterParams: { hlGroup: "SpellBad" },
-    } as any)).map(R.omit(["user_data"])),
+    } as any)),
     [
       {
         word: "0a0b0c0",
