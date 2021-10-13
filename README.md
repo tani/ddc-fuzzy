@@ -60,5 +60,10 @@ call ddc#custom#patch_global('filterParams', {
   \ })
 ```
 
+## Related Projects
+
+- [tani/ddc-git](https://github.com/tani/ddc-git), git commit/file/branch completion
+- [tani/ddc-oldfiles](https'//github.com/tani/ddc-oldfiles), oldfiles completion
+
 This work is licensed under the MIT License. Copyright &copy; 2021 TANIGUCHI
 Masaya. All rights reserved.
