@@ -64,6 +64,7 @@ call ddc#custom#patch_global('filterParams', {
 
 - [tani/ddc-git](https://github.com/tani/ddc-git), git commit/file/branch completion
 - [tani/ddc-oldfiles](https://github.com/tani/ddc-oldfiles), oldfiles completion
+- [tani/ddc-path](https://github.com/tani/ddc-path), path namescompletion in current working directory
 
 This work is licensed under the MIT License. Copyright &copy; 2021 TANIGUCHI
 Masaya. All rights reserved.
