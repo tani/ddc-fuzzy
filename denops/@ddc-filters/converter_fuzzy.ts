@@ -2,12 +2,16 @@ import { Candidate } from "https://lib.deno.dev/x/ddc_vim@v0/types.ts";
 import {
   BaseFilter,
   FilterArguments,
+  OnInitArguments,
 } from "https://lib.deno.dev/x/ddc_vim@v0/base/filter.ts";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = { hlGroup: string };
 
 export class Filter extends BaseFilter<Params> {
+  override async onInit(args: OnInitArguments<Params>): Promise<void> {
+    await args.denops.cmd(`highlight link FuzzyAccent Number`);
+  }
   override filter(args: FilterArguments<Params>): Promise<Candidate[]> {
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
@@ -32,7 +36,7 @@ export class Filter extends BaseFilter<Params> {
   }
   override params(): Params {
     return {
-      hlGroup: "SpellBad",
+      hlGroup: "FuzzyAccent",
     };
   }
 }
