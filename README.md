@@ -1,8 +1,10 @@
 # ddc-fuzzy filters
 
+## Introduction
+
 https://user-images.githubusercontent.com/5019902/136666268-0953a435-f331-48e6-9502-490d40b55693.mp4
 
-Fuzzy matching filters for [ddc.vim](https://github.com/Shougo/ddc.vim)
+Fuzzy matching filters for [ddc.vim](https://github.com/Shougo/ddc.vim).
 
 The de facto standard filters,
 [match_head](https://github.com/Shougo/ddc-match_head) and
@@ -12,7 +14,9 @@ substring. However, they omit words with a typo. It means that we cannot obtain
 a suggestion word from wrd. Moreover, it is hard to select a long word with a
 short input.
 
-Our filters fix this problem with the fuzzy filter that hahaves like CtrlP.
+Our filters fix this problem with the fuzzy filter that behaves like CtrlP.
+
+## Installation
 
 To install our filters,
 
@@ -32,6 +36,8 @@ call ddc#custom#patch_global('sourceOptions', {
   \   }
   \ })
 ```
+
+## Configuration
 
 `matcher_fuzzy` filter provides an option `splitMode`. For the default mode,
 `{ 'splitMode': 'character' }`, each input character matches any characters of a
@@ -65,6 +71,7 @@ call ddc#custom#patch_global('filterParams', {
 - [tani/ddc-git](https://github.com/tani/ddc-git), git commit/file/branch completion
 - [tani/ddc-oldfiles](https://github.com/tani/ddc-oldfiles), oldfiles completion
 - [tani/ddc-path](https://github.com/tani/ddc-path), path namescompletion in current working directory
+- [tani/ddc-onp](https://github.com/tani/ddc-onp), yet another fuzzy matcher with O(NP) algorithm
 
 This work is licensed under the MIT License. Copyright &copy; 2021 TANIGUCHI
 Masaya. All rights reserved.
