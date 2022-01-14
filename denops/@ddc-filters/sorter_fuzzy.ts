@@ -1,8 +1,8 @@
-import { Candidate } from "https://lib.deno.dev/x/ddc_vim@v0/types.ts";
+import { Candidate } from "https://lib.deno.dev/x/ddc_vim@v1/types.ts";
 import {
   BaseFilter,
   FilterArguments,
-} from "https://lib.deno.dev/x/ddc_vim@v0/base/filter.ts";
+} from "https://lib.deno.dev/x/ddc_vim@v1/base/filter.ts";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = Record<string, never>;
