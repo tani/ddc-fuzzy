@@ -1,27 +1,27 @@
-import { Candidate } from "https://lib.deno.dev/x/ddc_vim@v1/types.ts";
+import { Item } from "https://lib.deno.dev/x/ddc_vim@v3/types.ts";
 import {
   BaseFilter,
   FilterArguments,
-} from "https://lib.deno.dev/x/ddc_vim@v1/base/filter.ts";
+} from "https://lib.deno.dev/x/ddc_vim@v3/base/filter.ts";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = Record<string, never>;
 
 export class Filter extends BaseFilter<Params> {
-  override filter(args: FilterArguments<Params>): Promise<Candidate[]> {
+  override filter(args: FilterArguments<Params>): Promise<Item[]> {
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
-    const matches = new Map<Candidate, fuzzy.Match>(
-      args.candidates.map((candidate) => [
-        candidate,
+    const matches = new Map<Item, fuzzy.Match>(
+      args.items.map((item) => [
+        item,
         fuzzy.findBestMatch(
           normalize(args.completeStr),
-          normalize(candidate.word),
+          normalize(item.word),
         ),
       ]),
     );
     return Promise.resolve(
-      args.candidates.sort((a, b) => {
+      args.items.sort((a, b) => {
         const x = matches.get(b)?.score ?? 0;
         const y = matches.get(a)?.score ?? 0;
         return x - y;
