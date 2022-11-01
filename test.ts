@@ -12,7 +12,7 @@ Deno.test("matcher", async () => {
     (await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
-      candidates: [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }, {
+      items: [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }, {
         word: "xyz",
       }],
       filterParams: { splitMode: "character" },
@@ -23,7 +23,7 @@ Deno.test("matcher", async () => {
     (await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "aBc",
-      candidates: [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBxc" }, {
+      items: [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBxc" }, {
         word: "aBc",
       }, { word: "xyz" }],
       filterParams: { splitMode: "word" },
@@ -37,7 +37,7 @@ Deno.test("sorter", async () => {
     (await sorter.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
-      candidates: [{ word: "0a0b0c0" }, { word: "abc" }],
+      items: [{ word: "0a0b0c0" }, { word: "abc" }],
     } as any)),
     [{ word: "abc" }, { word: "0a0b0c0" }],
   );
@@ -58,7 +58,7 @@ Deno.test("converter", async () => {
     (await converter.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
-      candidates: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
+      items: [{ word: "0a0b0c0" }, { word: "abc" }, { word: "xyz" }],
       filterParams: { hlGroup: "SpellBad" },
     } as any)),
     [
