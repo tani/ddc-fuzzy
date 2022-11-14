@@ -20,16 +20,22 @@ export class Filter extends BaseFilter<Params> {
         const match = fuzzy.findBestMatch(
           normalize(args.completeStr),
           normalize(item.word),
-        )
+        );
+        if (!match) {
+          return item;
+        }
         return {
           ...item,
-          highlights: match?.pos.map((col) => ({
-            col: col,
-            type: "abbr",
-            name: "ddc_fuzzy_matched_character",
-            "hl_group": args.filterParams.hlGroup,
-            width: 1,
-          })),
+          highlights: [
+            ...(item.highlights ?? []),
+            ...match.pos.map((col) => ({
+              col: col,
+              type: "abbr",
+              name: "ddc_fuzzy_matched_character",
+              "hl_group": args.filterParams.hlGroup,
+              width: 1,
+            })),
+          ],
         };
       }),
     );
