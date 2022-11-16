@@ -30,7 +30,7 @@ export class Filter extends BaseFilter<Params> {
             ...(item.highlights ?? []),
             ...match.pos.map((col) => ({
               col: col,
-              type: "abbr",
+              type: "abbr" as const,
               name: "ddc_fuzzy_matched_character",
               "hl_group": args.filterParams.hlGroup,
               width: 1,
