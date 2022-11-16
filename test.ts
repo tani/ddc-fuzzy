@@ -14,36 +14,36 @@ const converter = new Converter.Filter();
 
 Deno.test("matcher", async () => {
   assertEquals(
-    (await matcher.filter({
+    await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       items: [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }, {
         word: "xyz",
       }],
       filterParams: { splitMode: "character" },
-    } as any)),
+    } as any),
     [{ word: "0a0b0c0" }, { word: "axbc" }, { word: "abc" }],
   );
   assertEquals(
-    (await matcher.filter({
+    await matcher.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "aBc",
       items: [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBxc" }, {
         word: "aBc",
       }, { word: "xyz" }],
       filterParams: { splitMode: "word" },
-    } as any)),
+    } as any),
     [{ word: "0a0B0c0" }, { word: "axBc" }, { word: "aBc" }],
   );
 });
 
 Deno.test("sorter", async () => {
   assertEquals(
-    (await sorter.filter({
+    await sorter.filter({
       sourceOptions: { ignoreCase: false },
       completeStr: "abc",
       items: [{ word: "0a0b0c0" }, { word: "abc" }],
-    } as any)),
+    } as any),
     [{ word: "abc" }, { word: "0a0b0c0" }],
   );
 });
