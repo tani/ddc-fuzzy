@@ -1,4 +1,8 @@
-import { Item } from "https://lib.deno.dev/x/ddc_vim@v3/types.ts";
+import type { Denops } from "https://lib.deno.dev/x/ddc_vim@v3/deps.ts";
+import type {
+  Item,
+  PumHighlight,
+} from "https://lib.deno.dev/x/ddc_vim@v3/types.ts";
 import {
   BaseFilter,
   FilterArguments,
@@ -12,33 +16,43 @@ export class Filter extends BaseFilter<Params> {
   override async onInit(args: OnInitArguments<Params>): Promise<void> {
     await args.denops.cmd(`highlight link FuzzyAccent Number`);
   }
-  override filter(args: FilterArguments<Params>): Promise<Item[]> {
+  override async filter(args: FilterArguments<Params>): Promise<Item[]> {
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
-    return Promise.resolve(
-      args.items.map((item) => {
-        const match = fuzzy.findBestMatch(
-          normalize(args.completeStr),
-          normalize(item.word),
-        );
-        if (!match) {
-          return item;
-        }
-        return {
-          ...item,
-          highlights: [
-            ...(item.highlights ?? []),
-            ...match.pos.map((col) => ({
-              col: col,
-              type: "abbr" as const,
-              name: "ddc_fuzzy_matched_character",
-              "hl_group": args.filterParams.hlGroup,
-              width: 1,
-            })),
-          ],
-        };
-      }),
+    const item_matches = args.items.map((item) =>
+      [
+        item,
+        fuzzy.findBestMatch(normalize(args.completeStr), normalize(item.word)),
+      ] as const
     );
+    const slices = item_matches.map(([{ word }, { pos }]) =>
+      pos.map((col, idx) => word.slice(pos[idx - 1] ?? 0, col))
+    ).flat();
+    const slice_bytes = await _internals.bulk_strlen(args.denops, slices);
+    let slice_index = 0;
+    return item_matches.map(([item, { pos }]): Item => {
+      if (pos.length === 0) {
+        return item;
+      }
+      let col = 0;
+      const highlights = pos.map((): PumHighlight => {
+        col += slice_bytes[slice_index++];
+        return {
+          col,
+          type: "abbr",
+          name: "ddc_fuzzy_matched_character",
+          hl_group: args.filterParams.hlGroup,
+          width: 1,
+        };
+      });
+      return {
+        ...item,
+        highlights: [
+          ...(item.highlights ?? []),
+          ...highlights,
+        ],
+      };
+    });
   }
   override params(): Params {
     return {
@@ -46,3 +60,12 @@ export class Filter extends BaseFilter<Params> {
     };
   }
 }
+
+function bulk_strlen(denops: Denops, slist: string[]): Promise<number[]> {
+  return denops.eval(
+    "map(l:slist, {_, s -> strlen(s)})",
+    { slist },
+  ) as Promise<number[]>;
+}
+
+export const _internals = { bulk_strlen };
