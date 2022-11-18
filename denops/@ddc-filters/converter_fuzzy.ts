@@ -19,23 +19,28 @@ export class Filter extends BaseFilter<Params> {
   override async filter(args: FilterArguments<Params>): Promise<Item[]> {
     const normalize = (s: string) =>
       args.sourceOptions.ignoreCase ? s.toLowerCase() : s;
-    const item_matches = args.items.map((item) =>
-      [
-        item,
-        fuzzy.findBestMatch(normalize(args.completeStr), normalize(item.word)),
-      ] as const
+    const completeStr = normalize(args.completeStr);
+    const item_slices = args.items.map((item) => {
+      // concatate abbr and word, because abbr may not contain pattern.
+      const text_for_match = (item.abbr ?? "") + item.word;
+      const text = item.abbr ?? item.word;
+      const pos = fuzzy.match(completeStr, normalize(text_for_match));
+      const slices = pos
+        .filter((col) => col < text.length)
+        .map((col, idx) => text.slice(pos[idx - 1] ?? 0, col));
+      return [item, slices] as const;
+    });
+    const slice_bytes = await _internals.bulk_strlen(
+      args.denops,
+      item_slices.map(([_, slices]) => slices).flat(),
     );
-    const slices = item_matches.map(([{ word }, { pos }]) =>
-      pos.map((col, idx) => word.slice(pos[idx - 1] ?? 0, col))
-    ).flat();
-    const slice_bytes = await _internals.bulk_strlen(args.denops, slices);
     let slice_index = 0;
-    return item_matches.map(([item, { pos }]): Item => {
-      if (pos.length === 0) {
+    return item_slices.map(([item, slices]): Item => {
+      if (slices.length === 0) {
         return item;
       }
       let col = 0;
-      const highlights = pos.map((): PumHighlight => {
+      const highlights = slices.map((): PumHighlight => {
         col += slice_bytes[slice_index++];
         return {
           col,
