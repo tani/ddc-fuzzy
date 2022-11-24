@@ -7,10 +7,13 @@ export interface Match {
 }
 
 export function scoreMatch(source: string, pos: number[]): number {
-  const length = (pos.at(-1) ?? 0) - pos[0];
+  if (pos.length === 0) {
+    return 0;
+  }
+  const length = pos.length > 1 ? pos.at(-1)! - pos[0] + 1 : 1;
   let ngroup = 1;
-  for (let i = 0; i < pos.length; i++) {
-    if ((pos.at(i - 1) ?? -1) + 1 !== pos[i]) {
+  for (let i = 1; i < pos.length; i++) {
+    if (pos[i - 1] + 1 !== pos[i]) {
       ngroup += 1;
     }
   }
