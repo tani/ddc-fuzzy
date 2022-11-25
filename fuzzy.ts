@@ -25,38 +25,59 @@ export function scoreMatch(source: string, pos: number[]): number {
   return score;
 }
 
-export function findAllMatches(pattern: string, source: string): Match[] {
+export function findAllMatches(
+  pattern: string,
+  source: string,
+  threshold = 100,
+): Match[] {
   const h = new Map<string, number[]>();
   for (let i = 0; i < source.length; i++) {
     const c = source[i];
     h.has(c) || h.set(c, []);
-    h.get(c)?.push(i);
+    h.get(c)!.push(i);
   }
-  const matches: Match[] = [];
-  let oldPosList = h.get(pattern[0])?.map((c) => [c]) ?? [];
-  for (let i = 1; i < pattern.length; i++) {
-    const newPosList = [];
-    for (const oldPos of oldPosList) {
-      for (const j of h.get(pattern[i]) ?? []) {
-        if (oldPos[oldPos.length - 1] < j) {
-          const pos = oldPos.concat(j);
-          if (i === pattern.length - 1) {
-            const score = scoreMatch(source, pos);
-            matches.push({ pos, score });
-          } else {
-            newPosList.push(pos);
+  const thresholdFilter = (posList: number[][]): number[][] => {
+    if (threshold === 0 || posList.length <= threshold) {
+      return posList;
+    }
+    // filter by last pos is more lower
+    return posList.sort((a, b) => {
+      for (let i = a.length - 1; i >= 0; --i) {
+        const d = a[i] - b[i];
+        if (d) return d;
+      }
+      return 0;
+    }).slice(0, threshold);
+  };
+  const posList = Array.from(pattern).slice(1).reduce(
+    (oldPosList, c): number[][] => {
+      const newPosList = [];
+      const patPosList = h.get(c)!;
+      for (const oldPos of oldPosList) {
+        const last = oldPos.at(-1)!;
+        for (const j of patPosList) {
+          if (last < j) {
+            newPosList.push(oldPos.concat(j));
           }
         }
       }
-    }
-    oldPosList = newPosList;
-  }
-  return matches;
+      return thresholdFilter(newPosList);
+    },
+    thresholdFilter(h.get(pattern[0])!.map((c) => [c])),
+  );
+  return posList.map((pos): Match => ({
+    pos,
+    score: scoreMatch(source, pos),
+  }));
 }
 
-export function findBestMatch(pattern: string, source: string): Match {
+export function findBestMatch(
+  pattern: string,
+  source: string,
+  threshold?: number,
+): Match {
   let bestMatch: Match = { pos: [], score: -Infinity };
-  for (const m of findAllMatches(pattern, source)) {
+  for (const m of findAllMatches(pattern, source, threshold)) {
     if (m.score > bestMatch.score) {
       bestMatch = m;
     }
@@ -64,12 +85,20 @@ export function findBestMatch(pattern: string, source: string): Match {
   return bestMatch;
 }
 
-export function score(pattern: string, source: string): number {
-  return findBestMatch(pattern, source).score;
+export function score(
+  pattern: string,
+  source: string,
+  threshold?: number,
+): number {
+  return findBestMatch(pattern, source, threshold).score;
 }
 
-export function match(pattern: string, source: string): number[] {
-  return findBestMatch(pattern, source).pos;
+export function match(
+  pattern: string,
+  source: string,
+  threshold?: number,
+): number[] {
+  return findBestMatch(pattern, source, threshold).pos;
 }
 
 export function ctest(pattern: string, source: string): boolean {
