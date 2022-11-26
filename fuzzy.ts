@@ -63,7 +63,7 @@ export function findAllMatches(
       }
       return thresholdFilter(newPosList);
     },
-    thresholdFilter(h.get(pattern[0])!.map((c) => [c])),
+    thresholdFilter(h.get(pattern[0])?.map((c) => [c]) ?? []),
   );
   return posList.map((pos): Match => ({
     pos,
