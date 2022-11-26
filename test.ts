@@ -1,3 +1,4 @@
+import * as Fuzzy from "./fuzzy.ts";
 import * as Matcher from "./denops/@ddc-filters/matcher_fuzzy.ts";
 import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
@@ -11,6 +12,69 @@ import type { PumHighlight } from "https://deno.land/x/ddc_vim@v3.1.0/types.ts";
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
 const converter = new Converter.Filter();
+
+Deno.test("findAllMatches", async (t) => {
+  await t.step("empty pattern", () => {
+    assertEquals(
+      Fuzzy.findAllMatches("", "bcd"),
+      [],
+    );
+  });
+
+  await t.step("empty source", () => {
+    assertEquals(
+      Fuzzy.findAllMatches("abc", ""),
+      [],
+    );
+  });
+
+  await t.step("empty pattern and source", () => {
+    assertEquals(
+      Fuzzy.findAllMatches("", ""),
+      [],
+    );
+  });
+
+  await t.step("no match pattern", async (t) => {
+    await t.step("1 char", () => {
+      assertEquals(
+        Fuzzy.findAllMatches("a", "bcd"),
+        [],
+      );
+    });
+
+    await t.step("1 char match, other no match", () => {
+      assertEquals(
+        Fuzzy.findAllMatches("ba", "bcd"),
+        [],
+      );
+    });
+  });
+
+  await t.step("match pattern", async (t) => {
+    await t.step("1 match", () => {
+      const actual = Fuzzy.findAllMatches("a", "abc");
+      assertEquals(
+        actual.map(({score: _, ...rest}) => rest),
+        [
+          {pos: [0]},
+        ],
+      );
+    });
+
+    await t.step("2 match", () => {
+      const actual = Fuzzy.findAllMatches("ab", "abcb");
+      const sorted = actual.slice().sort((a, b) => b.score - a.score);
+      assertEquals(
+        sorted.map(({score: _, ...rest}) => rest),
+        [
+          {pos: [0, 1]},
+          {pos: [0, 3]},
+        ],
+      );
+    });
+  });
+});
 
 Deno.test("matcher", async () => {
   assertEquals(
