@@ -30,11 +30,17 @@ export function findAllMatches(
   source: string,
   threshold = 100,
 ): Match[] {
+  if (pattern.length === 0) {
+    return [];
+  }
   const h = new Map<string, number[]>();
   for (let i = 0; i < source.length; i++) {
     const c = source[i];
     h.has(c) || h.set(c, []);
     h.get(c)!.push(i);
+  }
+  if (Array.from(pattern).some((c) => !h.has(c))) {
+    return [];
   }
   const thresholdFilter = (posList: number[][]): number[][] => {
     if (threshold === 0 || posList.length <= threshold) {
@@ -63,7 +69,7 @@ export function findAllMatches(
       }
       return thresholdFilter(newPosList);
     },
-    thresholdFilter(h.get(pattern[0])?.map((c) => [c]) ?? []),
+    thresholdFilter(h.get(pattern[0])!.map((c) => [c])),
   );
   return posList.map((pos): Match => ({
     pos,
