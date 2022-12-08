@@ -150,6 +150,47 @@ Deno.test("converter", async () => {
   }
 });
 
+Deno.test("converter:abbr", async () => {
+  const bulk_strlen_stub = stub(
+    Converter._internals,
+    "bulk_strlen",
+    (_, slist: string[]) => Promise.resolve(slist.map((s) => s.length)),
+  );
+  try {
+    assertEquals(
+      await converter.filter({
+        sourceOptions: { ignoreCase: false },
+        completeStr: "abc",
+        items: [
+          {
+            word: "0a0b0c0",
+            abbr: "[foo]0a0b0c0",
+          },
+          {
+            word: "XXXXXabXXXXXc",
+            abbr: "...ab",
+          },
+        ],
+        filterParams: { hlGroup: "SpellBad" },
+      } as any),
+      [
+        {
+          word: "0a0b0c0",
+          abbr: "[foo]0a0b0c0",
+          highlights: [highlight(6), highlight(8), highlight(10)],
+        },
+        {
+          word: "XXXXXabXXXXXc",
+          abbr: "...ab",
+          highlights: [highlight(3), highlight(4)],
+        },
+      ],
+    );
+  } finally {
+    bulk_strlen_stub.restore();
+  }
+});
+
 Deno.test("converter:multibytes-items", async () => {
   const bulk_strlen_stub = stub(
     Converter._internals,
