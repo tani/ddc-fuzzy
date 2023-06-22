@@ -53,7 +53,9 @@ export class Filter extends BaseFilter<Params> {
       return {
         ...item,
         highlights: [
-          ...(item.highlights ?? []),
+          ...(item.highlights ?? []).filter((hl) =>
+            hl.name !== "ddc_fuzzy_matched_character"
+          ),
           ...highlights,
         ],
       };
