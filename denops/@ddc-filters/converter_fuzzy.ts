@@ -39,7 +39,7 @@ export class Filter extends BaseFilter<Params> {
       if (slices.length === 0) {
         return item;
       }
-      let col = 0;
+      let col = 1;
       const highlights = slices.map((): PumHighlight => {
         col += slice_bytes[slice_index++];
         return {
