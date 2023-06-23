@@ -39,7 +39,7 @@ export class Filter extends BaseFilter<Params> {
       if (slices.length === 0) {
         return item;
       }
-      let col = 0;
+      let col = 1;
       const highlights = slices.map((): PumHighlight => {
         col += slice_bytes[slice_index++];
         return {
@@ -53,7 +53,9 @@ export class Filter extends BaseFilter<Params> {
       return {
         ...item,
         highlights: [
-          ...(item.highlights ?? []),
+          ...(item.highlights ?? []).filter((hl) =>
+            hl.name !== "ddc_fuzzy_matched_character"
+          ),
           ...highlights,
         ],
       };
