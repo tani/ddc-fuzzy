@@ -2,12 +2,12 @@ import * as Fuzzy from "./fuzzy.ts";
 import * as Matcher from "./denops/@ddc-filters/matcher_fuzzy.ts";
 import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
-import { assertEquals } from "https://deno.land/std@0.164.0/testing/asserts.ts";
+import { assertEquals } from "https://deno.land/std@0.224.0/testing/asserts.ts";
 import {
   assertSpyCallArg,
   stub,
-} from "https://deno.land/std@0.164.0/testing/mock.ts";
-import type { PumHighlight } from "https://deno.land/x/ddc_vim@v3.1.0/types.ts";
+} from "https://deno.land/std@0.224.0/testing/mock.ts";
+import type { PumHighlight } from "https://deno.land/x/ddc_vim@v5.0.0/types.ts";
 
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
