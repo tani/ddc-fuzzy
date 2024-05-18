@@ -1,0 +1,22 @@
+name: Update dependencies
+
+on:
+  push:
+    branches: ["main"]
+  schedule:
+    # * is a special character in YAML so you have to quote this string
+    - cron:  '0 0 1 * *'
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo
+        uses: actions/checkout@v4
+
+      - name: Update dependency
+        uses: hasundue/molt-action@v1-rc
