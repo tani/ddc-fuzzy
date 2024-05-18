@@ -139,9 +139,9 @@ Deno.test("converter", async () => {
       [
         {
           word: "0a0b0c0",
-          highlights: [highlight(1), highlight(3), highlight(5)],
+          highlights: [highlight(2), highlight(4), highlight(6)],
         },
-        { word: "abc", highlights: [highlight(0), highlight(1), highlight(2)] },
+        { word: "abc", highlights: [highlight(1), highlight(2), highlight(3)] },
         { word: "xyz" },
       ],
     );
@@ -177,12 +177,12 @@ Deno.test("converter:abbr", async () => {
         {
           word: "0a0b0c0",
           abbr: "[foo]0a0b0c0",
-          highlights: [highlight(6), highlight(8), highlight(10)],
+          highlights: [highlight(7), highlight(9), highlight(11)],
         },
         {
           word: "XXXXXabXXXXXc",
           abbr: "...ab",
-          highlights: [highlight(3), highlight(4)],
+          highlights: [highlight(4), highlight(5)],
         },
       ],
     );
@@ -212,12 +212,12 @@ Deno.test("converter:multibytes-items", async () => {
       [
         {
           word: "aＡbＢcＣd",
-          highlights: [highlight(0), highlight(4), highlight(8)],
+          highlights: [highlight(1), highlight(5), highlight(9)],
         },
         { word: "xyz" },
         {
           word: "\u6F22a\uD83C\uDC04bc",
-          highlights: [highlight(3), highlight(8), highlight(9)],
+          highlights: [highlight(4), highlight(9), highlight(10)],
         },
       ],
     );
@@ -250,7 +250,7 @@ Deno.test("converter:multibytes-completeStr", async () => {
       } as any),
       [{
         word: "fooＡＢbarＣbaz",
-        highlights: [highlight(3), highlight(6), highlight(12)],
+        highlights: [highlight(4), highlight(7), highlight(13)],
       }],
     );
     assertSpyCallArg(bulk_strlen_stub, 0, 1, ["foo", "Ａ", "Ｂbar"]);
