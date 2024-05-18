@@ -19,3 +19,10 @@ jobs:
 
       - name: Update dependency
         uses: hasundue/molt-action@v1-rc
+
+      - uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
+      - name: Run test
+        run: deno test
