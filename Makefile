@@ -1,5 +1,5 @@
 test:
-	deno test --unstable
+	deno test
 
 fmt:
 	deno fmt

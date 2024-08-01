@@ -1,13 +1,13 @@
-import type { Denops } from "https://deno.land/x/ddc_vim@v6.0.0/deps.ts";
+import type { Denops } from "jsr:@denops/std@7.0.1";
 import type {
   Item,
   PumHighlight,
-} from "https://deno.land/x/ddc_vim@v6.0.0/types.ts";
+} from "jsr:@shougo/ddc-vim@6.0.0/types";
 import {
   BaseFilter,
   FilterArguments,
   OnInitArguments,
-} from "https://deno.land/x/ddc_vim@v6.0.0/base/filter.ts";
+} from "jsr:@shougo/ddc-vim@6.0.0/filter";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = { hlGroup: string };

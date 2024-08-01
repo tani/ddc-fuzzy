@@ -1,8 +1,8 @@
-import { Item } from "https://deno.land/x/ddc_vim@v6.0.0/types.ts";
+import { Item } from "jsr:@shougo/ddc-vim@6.0.0/types";
 import {
   BaseFilter,
   FilterArguments,
-} from "https://deno.land/x/ddc_vim@v6.0.0/base/filter.ts";
+} from "jsr:@shougo/ddc-vim@6.0.0/filter";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = {
