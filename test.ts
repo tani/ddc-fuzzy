@@ -7,7 +7,7 @@ import {
   assertSpyCallArg,
   stub,
 } from "https://deno.land/std@0.224.0/testing/mock.ts";
-import type { PumHighlight } from "https://deno.land/x/ddc_vim@v5.0.0/types.ts";
+import type { PumHighlight } from "https://deno.land/x/ddc_vim@v6.0.0/types.ts";
 
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
