@@ -2,7 +2,7 @@ import * as Fuzzy from "./fuzzy.ts";
 import * as Matcher from "./denops/@ddc-filters/matcher_fuzzy.ts";
 import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
-import { assertEquals } from "jsr:@std/assert@1.0.1";
+import { assertEquals } from "jsr:@std/assert@1.0.3";
 import {
   assertSpyCallArg,
   stub,
