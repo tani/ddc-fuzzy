@@ -1,8 +1,8 @@
-import { Item } from "jsr:@shougo/ddc-vim@6.0.0/types";
+import { Item } from "jsr:@shougo/ddc-vim@7.0.0/types";
 import {
   BaseFilter,
   FilterArguments,
-} from "jsr:@shougo/ddc-vim@6.0.0/filter";
+} from "jsr:@shougo/ddc-vim@7.0.0/filter";
 import * as fuzzy from "../../fuzzy.ts";
 
 type Params = Record<string, never>;
