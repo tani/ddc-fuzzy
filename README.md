@@ -27,7 +27,7 @@ Plug 'tani/ddc-fuzzy'
 To use our filters,
 
 ```viml
-call ddc#custom#patch_global('completionMenu', 'pum.vim')
+call ddc#custom#patch_global('ui', 'pum')
 call ddc#custom#patch_global('sourceOptions', {
   \   '_': {
   \     'matchers': ['matcher_fuzzy'],
