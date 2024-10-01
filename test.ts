@@ -4,7 +4,7 @@ import * as Sorter from "./denops/@ddc-filters/sorter_fuzzy.ts";
 import * as Converter from "./denops/@ddc-filters/converter_fuzzy.ts";
 import { assertEquals } from "jsr:@std/assert@1.0.3";
 import { assertSpyCallArg, stub } from "jsr:@std/testing@1.0.2/mock";
-import type { PumHighlight } from "jsr:@shougo/ddc-vim@7.0.0/types";
+import type { PumHighlight } from "jsr:@shougo/ddc-vim@7.1.0/types";
 
 const matcher = new Matcher.Filter();
 const sorter = new Sorter.Filter();
