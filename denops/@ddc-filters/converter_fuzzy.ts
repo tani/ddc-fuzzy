@@ -1,4 +1,4 @@
-import type { Denops } from "jsr:@denops/std@8.1.1";
+import type { Denops } from "jsr:@denops/std@8.2.0";
 import type {
   Item,
   PumHighlight,
